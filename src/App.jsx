@@ -1,5 +1,10 @@
+import ResponsiveAppBar from "./components/navbar"
+
 export default function App () {
-  return <h1>
+  return <> 
+  < ResponsiveAppBar />
+  <h1>
     Hello World, using Vite + React!!!
   </h1>
+  </>
 }
