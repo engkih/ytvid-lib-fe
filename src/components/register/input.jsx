@@ -1,12 +1,11 @@
-import { useState, useEffect} from "react";
-import { Navigate, redirect, useNavigate } from "react-router-dom";
+import { useState} from "react";
+import { useNavigate } from "react-router-dom";
 
 function RegisterInput() {
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [Loggedin, setLoggedin] = useState(false);
     const navigate = useNavigate();
 
     const submit = async (e) => {
@@ -15,21 +14,24 @@ function RegisterInput() {
         await fetch('http://localhost:8080/api/register', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
+            credentials: 'include',
             body: JSON.stringify({
                 name,
                 email,
                 password
             })
-        });
-        setLoggedin(true)
+        })
+        .then((response) => {
+            if(!response.ok) {
+                throw new Error(response.status);
+            }
+            else {
+                navigate("/login")
+            };
+        })
 
     }
 
-    useEffect(() => {
-        if (Loggedin) {
-          navigate("/login");
-        }
-      }, [Loggedin]);
 
 
     return (

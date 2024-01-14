@@ -1,11 +1,10 @@
 import { useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom"
 
-function LoginInput({loggedin, setLoggedin}) {
+function LoginInput({setLoggedin, setShowPage}) {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const navigate = useNavigate();
 
     const submit = async (e) => {
         e.preventDefault();
@@ -23,19 +22,15 @@ function LoginInput({loggedin, setLoggedin}) {
             if(!response.ok) {
                 throw new Error(response.status);
             }
-            else return setLoggedin(true);
+            else {
+                setLoggedin(true);
+                setShowPage(true);
+            };
         })
         ;
 
     }
 
-    console.log(loggedin)
-
-    useEffect(() => {
-        if (loggedin) {
-          navigate("/");
-        }
-      }, [loggedin]);
 
     return(
         <div className="hero h-full bg-base-200">
