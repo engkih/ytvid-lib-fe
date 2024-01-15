@@ -19,9 +19,7 @@ function Login({ loggedin, setLoggedin }) {
 
     if (showPage)return (
         <div className="h-full flex flex-col">
-            < Navbar />
             < LoginInput loggedin={loggedin} setLoggedin={setLoggedin} showPage={showPage} setShowPage={setShowPage} />
-            < Footer />
         </div>
     )
 }

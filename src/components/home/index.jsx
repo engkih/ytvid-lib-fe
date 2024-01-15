@@ -1,14 +1,21 @@
-import Navbar from "../navbar"
-import Content from "../content"
-import Footer from "../footer"
+import { useState, useEffect } from "react"
 
-function Home() {
+import Content from "./content"
+
+function Home({loggedin}) {
+
+    const [showPage, setShowPage] = useState(false)
+
+    useEffect(() => {
+        if (loggedin) {
+            setShowPage(true);
+        }else if(!loggedin){
+            setShowPage(false)
+        }
+      }, [loggedin]);
+
     return (
-        <div className="h-full flex flex-col">
-        < Navbar />
-        < Content />
-        < Footer />
-        </div>
+        < Content showPage={showPage} />
     )
 }
 
