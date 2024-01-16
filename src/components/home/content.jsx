@@ -1,6 +1,23 @@
 import { Link } from "react-router-dom"
+import { useEffect } from "react";
 
 function Content({ showPage }) {
+    console.log(showPage)
+
+    if (showPage) {
+        fetch('http://localhost:8080/api/vidindex', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+        })
+            .then((res) => {
+                return res.json();
+            })
+            .then((data) => {
+                console.log(data.videos);
+            });
+
+    }
 
     if (showPage) {
         return (
