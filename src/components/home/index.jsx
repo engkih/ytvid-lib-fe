@@ -2,20 +2,20 @@ import { useState, useEffect } from "react"
 
 import Content from "./content"
 
-function Home({loggedin}) {
+function Home({ urlDatDone, videos, vidUrls }) {
 
     const [showPage, setShowPage] = useState(false)
 
     useEffect(() => {
-        if (loggedin) {
+        if (urlDatDone) {
             setShowPage(true);
-        }else if(!loggedin){
+        } else if (!urlDatDone) {
             setShowPage(false)
         }
-      }, [loggedin]);
+    }, [urlDatDone]);
 
     return (
-        < Content showPage={showPage} />
+        < Content showPage={showPage} videos={videos} vidUrls={vidUrls} />
     )
 }
 
