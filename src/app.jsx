@@ -96,6 +96,7 @@ function App() {
                         <Route path='/' element={< Home urlDatDone={urlDatDone} videos={videos} vidUrls={vidUrls} />} />
                         <Route path='register' element={< Register loggedin={loggedin} setLoggedin={setLoggedin} />} />
                         <Route path='login' element={< Login loggedin={loggedin} setLoggedin={setLoggedin} />} />
+                        <Route path='video' element={< Video />} />
                     </Routes>
                     < Footer />
                 </BrowserRouter>

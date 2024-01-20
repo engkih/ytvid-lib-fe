@@ -1863,6 +1863,10 @@ html {
   margin: auto;
 }
 
+.m-5 {
+  margin: 1.25rem;
+}
+
 .mt-3 {
   margin-top: 0.75rem;
 }
@@ -1875,12 +1879,20 @@ html {
   margin-top: auto;
 }
 
+.mb-auto {
+  margin-bottom: auto;
+}
+
 .flex {
   display: flex;
 }
 
 .grid {
   display: grid;
+}
+
+.h-80 {
+  height: 20rem;
 }
 
 .h-full {
@@ -1891,20 +1903,12 @@ html {
   height: 100vh;
 }
 
-.h-80 {
-  height: 20rem;
-}
-
-.max-h-80 {
-  max-height: 20rem;
+.max-h-96 {
+  max-height: 24rem;
 }
 
 .min-h-screen {
   min-height: 100vh;
-}
-
-.min-h-full {
-  min-height: 100%;
 }
 
 .w-10 {
@@ -1919,12 +1923,28 @@ html {
   width: 13rem;
 }
 
+.w-full {
+  width: 100%;
+}
+
 .w-96 {
   width: 24rem;
 }
 
-.w-full {
-  width: 100%;
+.w-3\/5 {
+  width: 60%;
+}
+
+.w-1\/2 {
+  width: 50%;
+}
+
+.w-px {
+  width: 1px;
+}
+
+.max-w-4xl {
+  max-width: 56rem;
 }
 
 .max-w-md {
@@ -1933,18 +1953,6 @@ html {
 
 .max-w-sm {
   max-width: 24rem;
-}
-
-.max-w-lg {
-  max-width: 32rem;
-}
-
-.max-w-xl {
-  max-width: 36rem;
-}
-
-.max-w-4xl {
-  max-width: 56rem;
 }
 
 .flex-1 {
@@ -1959,12 +1967,24 @@ html {
   flex-shrink: 0;
 }
 
+.snap-center {
+  scroll-snap-align: center;
+}
+
 .flex-row {
   flex-direction: row;
 }
 
 .flex-col {
   flex-direction: column;
+}
+
+.content-center {
+  align-content: center;
+}
+
+.items-center {
+  align-items: center;
 }
 
 .justify-center {
@@ -1979,6 +1999,10 @@ html {
   gap: 1rem;
 }
 
+.self-center {
+  align-self: center;
+}
+
 .text-wrap {
   text-wrap: wrap;
 }
@@ -1989,6 +2013,10 @@ html {
 
 .rounded-full {
   border-radius: 9999px;
+}
+
+.border {
+  border-width: 1px;
 }
 
 .bg-base-100 {
@@ -2011,8 +2039,9 @@ html {
      object-fit: cover;
 }
 
-.p-10 {
-  padding: 2.5rem;
+.object-center {
+  -o-object-position: center;
+     object-position: center;
 }
 
 .p-2 {
@@ -2027,9 +2056,29 @@ html {
   padding: 1.25rem;
 }
 
+.p-36 {
+  padding: 9rem;
+}
+
+.p-10 {
+  padding: 2.5rem;
+}
+
+.p-8 {
+  padding: 2rem;
+}
+
 .py-6 {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
+}
+
+.pb-5 {
+  padding-bottom: 1.25rem;
+}
+
+.text-left {
+  text-align: left;
 }
 
 .text-center {
@@ -2086,11 +2135,6 @@ html {
   .md\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-
-  .md\:text-lg {
-    font-size: 1.125rem;
-    line-height: 1.75rem;
-  }
 }
 
 @media (min-width: 1024px) {
@@ -2104,32 +2148,5 @@ html {
 
   .lg\:text-left {
     text-align: left;
-  }
-
-  .lg\:text-sm {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-  }
-
-  .lg\:text-xl {
-    font-size: 1.25rem;
-    line-height: 1.75rem;
-  }
-
-  .lg\:text-base {
-    font-size: 1rem;
-    line-height: 1.5rem;
-  }
-
-  .lg\:text-lg {
-    font-size: 1.125rem;
-    line-height: 1.75rem;
-  }
-}
-
-@media (min-width: 1280px) {
-  .xl\:text-base {
-    font-size: 1rem;
-    line-height: 1.5rem;
   }
 }
