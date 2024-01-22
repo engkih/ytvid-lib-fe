@@ -1,7 +1,38 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom"
 
-function Navbar({ loggedin, setLoggedin }) {
+function Navbar({ loggedin, setLoggedin}) {
 
+    const [VideoUrl, setVideoUrl] = useState("")
+    const [Title, setTitle] = useState("")
+    const [Description, setDescription] = useState("")
+    const [UserId, setUserId] = useState()
+    
+    useEffect(()  => {
+        fetchUser()
+    },[])
+
+    const fetchUser = async () => {
+        try {
+            await fetch('http://localhost:8080/api/user', {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include'
+            })
+                .then((response) => {
+                    if (response.ok == false) {
+                        return
+                    }
+                    return response.json()
+                })
+                .then(user => {
+                    setUserId(user.user.id)
+                })
+                ;
+        } catch (error) {
+            return
+        }
+    };
 
     const logout = async (e) => {
         e.preventDefault();
@@ -23,6 +54,35 @@ function Navbar({ loggedin, setLoggedin }) {
 
     }
 
+    const submit = async (e) => {
+        e.preventDefault();
+
+        await fetch('http://localhost:8080/api/vidpost', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({
+                UserId,
+                VideoUrl,
+                Title,
+                Description
+            })
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(response.status);
+                }
+            })
+            ;
+
+    }
+
+    function formReset() {
+        document.getElementById("addVidForm").reset();
+    }
+
+
+
 
     if (loggedin) {
         return (
@@ -31,6 +91,43 @@ function Navbar({ loggedin, setLoggedin }) {
                     <Link to="/" className="btn btn-ghost text-xl">YT Library</Link>
                 </div>
                 <div className="flex-none gap-2">
+                    <div className="">
+                        <button className="btn" onClick={() => document.getElementById('my_modal_1').showModal(() => { preventDefault() })}>Add</button>
+                        <dialog id="my_modal_1" className="modal">
+                            <div className="modal-box">
+                                <h3 className="font-bold text-lg">Add new video to your library!</h3>
+                                <form id="addVidForm" className="card-body" onSubmit={submit}>
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text">Link</span>
+                                        </label>
+                                        <input type="text" placeholder="Link" className="input input-bordered" required onChange={e => setVideoUrl(e.target.value)} />
+                                    </div>
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text">Title</span>
+                                        </label>
+                                        <input type="text" placeholder="Title" className="input input-bordered" required onChange={e => setTitle(e.target.value)} />
+                                    </div>
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text">Description</span>
+                                        </label>
+                                        <input type="text" placeholder="Description" className="input input-bordered" required onChange={e => setDescription(e.target.value)} />
+                                    </div>
+                                    <div className="form-control mt-6">
+                                        <button className="btn btn-primary">Add Video</button>
+                                    </div>
+                                </form>
+                                <div className="modal-action">
+                                    <form method="dialog">
+                                        <button className="btn" onClick={formReset}>Close</button>
+                                    </form>
+                                </div>
+                                <p>Press ESC or click "close" to close this window</p>
+                            </div>
+                        </dialog>
+                    </div>
                     <div className="form-control">
                         <input type="text" placeholder="Search" className="input input-bordered w-24 md:w-auto" />
                     </div>

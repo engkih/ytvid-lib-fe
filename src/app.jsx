@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useAsyncError } from 'react-router-dom'
 
 import Home from './components/home/index'
 import Register from './components/register'
@@ -87,6 +87,7 @@ function App() {
         )
     })
 
+
     if (!loggedin) {
         return (
             <div className='h-screen flex flex-col'>
@@ -113,9 +114,9 @@ function App() {
     return (
         <div className='min-h-screen flex flex-col'>
             <BrowserRouter>
-                < Navbar loggedin={loggedin} setLoggedin={setLoggedin} />
+                < Navbar loggedin={loggedin} setLoggedin={setLoggedin}/>
                 <Routes>
-                    <Route path='/' element={< User videos={videos} vidUrls={vidUrls} />} />
+                    <Route path='/' element={< User videos={videos} />} />
                     <Route path='register' element={< Register loggedin={loggedin} setLoggedin={setLoggedin} />} />
                     <Route path='login' element={< Login loggedin={loggedin} setLoggedin={setLoggedin} />} />
                     {vidPages}
