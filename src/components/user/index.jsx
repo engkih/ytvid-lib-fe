@@ -22,7 +22,7 @@ function User({ videos, vidUrls }) {
         }
 
         return (
-            <Link key={index} to={video.VideoUrl}>
+            <Link key={index} to={`/video/${parsers(video.VideoUrl)}`}>
                 <div className="card card-compact w-md h-80 bg-base-100 shadow-xl">
                     <figure><img src={`https://i.ytimg.com/vi/${parsers(video.VideoUrl)}/hq720.jpg`} alt={video.Title} className="object-cover" /></figure>
                     <div className="card-body">

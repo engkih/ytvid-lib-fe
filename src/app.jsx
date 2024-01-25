@@ -83,7 +83,7 @@ function App() {
 
     const vidPages = vidUrls.map((url, index) => {
         return (
-            <Route path={url} key={index} element={<Video />} />
+            <Route path={`/video/${url}`} key={index} element={<Video />} />
         )
     })
 
@@ -112,13 +112,14 @@ function App() {
     }
 
     return (
-        <div className='min-h-screen flex flex-col'>
+        <div className='h-screen flex flex-col'>
             <BrowserRouter>
                 < Navbar loggedin={loggedin} setLoggedin={setLoggedin}/>
                 <Routes>
                     <Route path='/' element={< User videos={videos} />} />
                     <Route path='register' element={< Register loggedin={loggedin} setLoggedin={setLoggedin} />} />
                     <Route path='login' element={< Login loggedin={loggedin} setLoggedin={setLoggedin} />} />
+                    <Route path='video' element={< Video />} />
                     {vidPages}
                 </Routes>
                 < Footer />
