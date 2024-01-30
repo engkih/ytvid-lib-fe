@@ -1,46 +1,180 @@
-import React from "react"
-import Youtube from "react-youtube"
+import React, { useState } from "react"
+import { useEffect } from "react";
+import { useLocation, useNavigate, Navigate } from "react-router-dom";
 
-class Video extends React.Component {
-    render() {
-        const option = {
-            height: '390',
-            width: '640',
-            playerVars: {
-                autoplay: 0,
-                controls: 1,
-            },
-        };
+function Video() {
 
-        return (
-            <div className="flex flex-col h-full">
-                <div className="m-2 border p-2 flex flex-row-reverse gap-2">
-                    <button className="btn btn-outline btn-error">Delete</button>
-                    <button className="btn btn-outline">Edit</button>
+    const [vidId, setVidId] = useState()
+    const [vidUrl, setVidUrl] = useState()
+    const [vidTitle, setVidTitle] = useState()
+    const [vidDesc, setVidDesc] = useState()
+    const [editUrl, setEditUrl] = useState()
+    const [editTitle, setEditTitle] = useState()
+    const [editDesc, setEditDesc] = useState()
+
+    const path = useLocation().pathname
+    const navigate = useNavigate()
+
+    const [seed, setSeed] = useState(1);
+    const reset = () => {
+
+        setSeed(seed + 1);
+    }
+
+    useEffect(() => {
+        fetchVideo();
+    }, [seed])
+
+    const fetchVideo = async () => {
+        try {
+            await fetch(`http://localhost:8080/api${path}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include'
+            })
+                .then((response) => {
+                    return response.json()
+                })
+                .then(data => {
+                    console.log(data)
+                    const video = data.video
+                    const embdUrl = video.VideoUrl.replace("watch?v=", "embed/")
+                    setVidId(video.ID)
+                    setVidUrl(embdUrl.split("&")[0])
+                    setVidTitle(video.Title)
+                    setVidDesc(video.Description)
+                })
+                ;
+        } catch (error) {
+            return
+        }
+    };
+
+    const updateVideo = async () => {
+        try {
+            await fetch(`http://localhost:8080/api${path}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({
+                    VideoUrl: editUrl,
+                    Title: editTitle,
+                    Description: editDesc
+                })
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(response.status);
+                    }
+                })
+                ;
+
+        } catch (error) {
+            return
+        }
+    };
+
+
+    const deleteVideo = async () => {
+        try {
+            await fetch(`http://localhost:8080/api${path}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include'
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(response.status);
+                    }
+                    return navigate(0)
+                })
+                ;
+
+        } catch (error) {
+            return
+        }
+    };
+
+    return (
+        <div className="flex flex-col h-full">
+            <div className="m-2 border p-2 flex flex-row justify-between">
+                <div className="mt-auto mb-auto">
+                    <h2 className="text-3xl">{vidTitle}</h2>
                 </div>
-                <div className="m-2 p-5 border h-full">
-                    <div className="h-full w-full">
-                        {/* <Youtube videoId="_4hCcyRCqtk" option={option} onReady={this._onReady} id="video"
-                        className="m-auto" /> */}
-                        <iframe className="h-full w-full" src="https://www.youtube.com/embed/_4hCcyRCqtk?si=7ivhOEF_FjJdrtkS" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+                <div className="flex flex-row-reverse gap-2">
+                    {/* <button className="btn btn-outline btn-error">Delete</button> */}
+                    <div>
+                        <button className="btn btn-outline btn-error" onClick={() => document.getElementById('delete_modal').showModal(() => { preventDefault() })}>Delete</button>
+                        <dialog id="delete_modal" className="modal">
+                            <div className="modal-box">
+                                <h3 className="font-bold text-lg">Are you sure want to delete this video from your library ?</h3>
+                                <div className="modal-action">
+                                    <form method="dialog">
+                                        <button className="btn btn-error" onClick={deleteVideo}>Delete</button>
+                                        <button className="btn">Cancle</button>
+                                    </form>
+                                </div>
+                                <p>Press ESC or click "close" to close this window</p>
+                            </div>
+                        </dialog>
                     </div>
-                </div>
-                <div className="m-2 p-5 border">
-                    <h2 className="text-left pb-5">Full Sound BR 101 - Raketenstart am Ostbahnhof [4K 60 FPS]</h2>
-                    <div className="max-h-28 overflow-auto">
-                        <p className="max-h-full text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Amet risus nullam eget felis eget. Odio morbi quis commodo odio aenean. Magna fringilla urna porttitor rhoncus dolor. Quis enim lobortis scelerisque fermentum dui faucibus in. Arcu cursus euismod quis viverra nibh cras. Id volutpat lacus laoreet non curabitur gravida arcu ac. Quam lacus suspendisse faucibus interdum posuere lorem ipsum. Nibh venenatis cras sed felis eget velit aliquet sagittis id. Aenean sed adipiscing diam donec adipiscing tristique. Viverra ipsum nunc aliquet bibendum enim facilisis gravida neque convallis. Pharetra massa massa ultricies mi quis hendrerit. Dignissim cras tincidunt lobortis feugiat vivamus at augue. Ultrices gravida dictum fusce ut. Porttitor leo a diam sollicitudin tempor id eu nisl. Pretium vulputate sapien nec sagittis.
-
-                            Velit dignissim sodales ut eu sem. Accumsan tortor posuere ac ut consequat semper viverra. Praesent elementum facilisis leo vel fringilla est ullamcorper eget. Et pharetra pharetra massa massa. Elit ullamcorper dignissim cras tincidunt lobortis feugiat. Fames ac turpis egestas maecenas pharetra convallis posuere. Lobortis scelerisque fermentum dui faucibus in ornare quam viverra. Orci a scelerisque purus semper eget duis at. Porttitor leo a diam sollicitudin tempor id eu nisl nunc. Dictum non consectetur a erat nam at.</p>
-
+                    {/* <button className="btn btn-outline">Edit</button> */}
+                    <div>
+                        <button className="btn btn-outline" onClick={() => document.getElementById('edit_modal').showModal(() => { preventDefault() })}>Edit</button>
+                        <dialog id="edit_modal" className="modal">
+                            <div className="modal-box">
+                                <h3 className="font-bold text-lg">Add new video to your library!</h3>
+                                <form id="addVidForm" className="card-body" onSubmit={e => {
+                                    updateVideo()
+                                    reset()
+                                    e.preventDefault()
+                                }}>
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text">Link</span>
+                                        </label>
+                                        <input type="text" defaultValue={vidUrl} className="input input-bordered" required onChange={e => setEditUrl(e.target.value)} />
+                                    </div>
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text">Title</span>
+                                        </label>
+                                        <input type="text" defaultValue={vidTitle} className="input input-bordered" required onChange={e => setEditTitle(e.target.value)} />
+                                    </div>
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text">Description</span>
+                                        </label>
+                                        <input type="text" defaultValue={vidDesc} className="input input-bordered" required onChange={e => setEditDesc(e.target.value)} />
+                                    </div>
+                                    <div className="form-control mt-6">
+                                        <button className="btn btn-primary">Edit Video</button>
+                                    </div>
+                                </form>
+                                <div className="modal-action">
+                                    <form method="dialog">
+                                        <button className="btn">Close</button>
+                                    </form>
+                                </div>
+                                <p>Press ESC or click "close" to close this window</p>
+                            </div>
+                        </dialog>
                     </div>
-
                 </div>
             </div>
-        )
-    }
-    _onReady(event) {
-        event.target.playVideo()
-    }
+            <div className="m-2 p-5 border h-full">
+                <div className="h-full w-full">
+                    <iframe className="h-full w-full" src={vidUrl} title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+                </div>
+            </div>
+            <div className="m-2 p-5 border">
+                <div className="max-h-28 overflow-auto">
+                    <p className="max-h-full text-left">{vidDesc}</p>
+                </div>
+
+            </div>
+        </div>
+    )
 }
 
 

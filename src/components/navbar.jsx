@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
-function Navbar({ loggedin, setLoggedin}) {
+function Navbar({ loggedin, setLoggedin }) {
 
     const [VideoUrl, setVideoUrl] = useState("")
     const [Title, setTitle] = useState("")
     const [Description, setDescription] = useState("")
     const [UserId, setUserId] = useState()
-    
-    useEffect(()  => {
+
+    const navigate = useNavigate()
+
+    useEffect(() => {
         fetchUser()
-    },[])
+    }, [])
 
     const fetchUser = async () => {
         try {
@@ -48,14 +50,20 @@ function Navbar({ loggedin, setLoggedin}) {
                 }
                 else {
                     setLoggedin(false);
+                    navigate("/")
+                    refreshPage();
                 };
             })
             ;
 
     }
 
+    function refreshPage() {
+        window.location.reload(false);
+    }
+
     const submit = async (e) => {
-        e.preventDefault();
+        // e.preventDefault();
 
         await fetch('http://localhost:8080/api/vidpost', {
             method: 'POST',
@@ -84,6 +92,7 @@ function Navbar({ loggedin, setLoggedin}) {
 
 
 
+
     if (loggedin) {
         return (
             <div className="navbar bg-base-100">
@@ -91,7 +100,7 @@ function Navbar({ loggedin, setLoggedin}) {
                     <Link to="/" className="btn btn-ghost text-xl">YT Library</Link>
                 </div>
                 <div className="flex-none gap-2">
-                    <div className="">
+                    <div>
                         <button className="btn" onClick={() => document.getElementById('my_modal_1').showModal(() => { preventDefault() })}>Add</button>
                         <dialog id="my_modal_1" className="modal">
                             <div className="modal-box">
